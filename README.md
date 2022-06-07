@@ -26,6 +26,15 @@ To properly operate this application please follow these instructions:
 - After file upload system will calculate commission
 - System will return a table styled list of inputs and commissions.
 
+## Input data
+Operations are given in a CSV file. In each line of the file the following data is provided:
+1. operation date in format `Y-m-d`
+2. user's identificator, number
+3. user's type, one of `private` or `business`
+4. operation type, one of `deposit` or `withdraw`
+5. operation amount (for example `2.12` or `3`)
+6. operation currency, one of `EUR`, `USD`, `JPY`
+
 ## Interface
 ![Commission Calculator](commission-calculator.png)
 

@@ -24,7 +24,7 @@ class CommissionCalculatorRequest extends FormRequest
     public function rules()
     {
         return [
-            'customFile' => ['required', /*'mimes:text/csv',*/'max:2048']
+            'customFile' => ['required', 'mimes:text,csv','max:2048']
         ];
     }
 }
