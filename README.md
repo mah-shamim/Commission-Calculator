@@ -1,6 +1,4 @@
 # Commission Calculator
-
-
 ## Installation
 - Git clone the project repository from this link: [Commission Calculator](https://github.com/mah-shamim/Commission-Calculator.git)
 - Execute this  command to install composer dependence
@@ -21,6 +19,12 @@ php artisan serve --port=5005
 
 ## Manual
 
+To properly operate this application please follow these instructions: 
+
+- Upload a deposit sample file in csv format [Example](input.csv)
+- Submit the form by clicking **Calculate** button
+- After file upload system will calculate commission
+- System will return a table styled list of inputs and commissions.
 
 ## Interface
 ![Commission Calculator](commission-calculator.png)
