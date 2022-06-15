@@ -7,6 +7,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CommissionCalculatorRequest;
 use App\Import\TransactionImport;
 use App\Services\TransactionService;
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -40,7 +41,7 @@ class CommissionCalculatorController
     /**
      * @param CommissionCalculatorRequest $commissionCalculatorRequest
      * @return Factory|View|Application
-     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+     * @throws FileNotFoundException
      */
     public function calculate(CommissionCalculatorRequest $commissionCalculatorRequest): Factory|View|Application
     {
