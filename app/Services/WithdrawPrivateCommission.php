@@ -41,33 +41,49 @@ class WithdrawPrivateCommission implements CommissionTypeInterface
                 $transaction->operation_currency
             );
             $this->transactions[$key]->converted_operation_amount = $convertedAmount;
-            $this->transactions[$key]->transaction_frequency = $this->getPreviousTransactionFrequency($transaction)->count();
-            if ($this->transactions[$key]->transaction_frequency > self::WITHDRAW_PRIVET_MAX_TRANSACTION_FREQUENCY):
-                        $this->transactions[$key]->commission_amount = $this->commissionService->commissionAmount($convertedAmount, self::COMMISSION_PERCENTAGE);
-                    else:
-                        $previousTransactions = $this->getPreviousTransactionFrequency($transaction);
-                        if ($previousTransactions->count() > 0) {
-                            $tempAmount = self::WITHDRAW_PRIVET_FREE_AMOUNT;
-                            foreach ($previousTransactions as $previousTransaction):
-                                $tempAmount = $tempAmount - $previousTransaction->converted_operation_amount;
-                                if ($tempAmount < 0):
-                                    break;
-                                endif;
-                            endforeach;
-                            if ($tempAmount <= 0) {
-                                $this->transactions[$key]->commission_amount = $this->commissionService->commissionAmount(($transaction->converted_operation_amount), self::COMMISSION_PERCENTAGE);
-                            } else {
-                                $this->transactions[$key]->commission_amount = $this->commissionService->commissionAmount(($transaction->converted_operation_amount - $tempAmount), self::COMMISSION_PERCENTAGE);
-                            }
-
-                        } else if ($this->transactions[$key]->converted_operation_amount <= self::WITHDRAW_PRIVET_FREE_AMOUNT) {
-                            $this->transactions[$key]->commission_amount = $this->commissionService->commissionAmount(0, self::COMMISSION_PERCENTAGE);
-                        } else {
-                            $this->transactions[$key]->commission_amount = $this->commissionService->commissionAmount(($this->transactions[$key]->converted_operation_amount - self::WITHDRAW_PRIVET_FREE_AMOUNT), 0.3);
+            $this->transactions[$key]->transaction_frequency = $this->getPreviousTransactionFrequency($transaction)
+                ->count();
+            if ($this->transactions[$key]->transaction_frequency > self::WITHDRAW_PRIVET_MAX_TRANSACTION_FREQUENCY) {
+                $this->transactions[$key]->commission_amount = $this->commissionService
+                    ->commissionAmount($convertedAmount, self::COMMISSION_PERCENTAGE);
+            }else {
+                $previousTransactions = $this->getPreviousTransactionFrequency($transaction);
+                if ($previousTransactions->count() > 0) {
+                    $tempAmount = self::WITHDRAW_PRIVET_FREE_AMOUNT;
+                    foreach ($previousTransactions as $previousTransaction) {
+                        $tempAmount = $tempAmount - $previousTransaction->converted_operation_amount;
+                        if ($tempAmount < 0) {
+                            break;
                         }
-                    endif;
+                    }
+                    if ($tempAmount <= 0) {
+                        $this->transactions[$key]->commission_amount = $this->commissionService
+                            ->commissionAmount(
+                                $transaction->converted_operation_amount,
+                                self::COMMISSION_PERCENTAGE
+                            );
+                    } else {
+                        $this->transactions[$key]->commission_amount = $this->commissionService
+                            ->commissionAmount(
+                                $transaction->converted_operation_amount - $tempAmount,
+                                self::COMMISSION_PERCENTAGE
+                            );
+                    }
 
-            $this->transactions[$key]->commission_amount = $this->currencyService->precision($this->transactions[$key]->commission_amount, $transaction->operation_currency);
+                } else if ($this->transactions[$key]->converted_operation_amount <= self::WITHDRAW_PRIVET_FREE_AMOUNT) {
+                    $this->transactions[$key]->commission_amount = $this->commissionService
+                        ->commissionAmount(0, self::COMMISSION_PERCENTAGE);
+                } else {
+                    $this->transactions[$key]->commission_amount = $this->commissionService
+                        ->commissionAmount(
+                            ($this->transactions[$key]->converted_operation_amount - self::WITHDRAW_PRIVET_FREE_AMOUNT),
+                            0.3
+                        );
+                }
+            }
+
+            $this->transactions[$key]->commission_amount = $this->currencyService
+                ->precision($this->transactions[$key]->commission_amount, $transaction->operation_currency);
         endforeach;
         return $this->transactions;
     }
