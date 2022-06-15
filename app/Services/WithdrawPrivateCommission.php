@@ -5,18 +5,23 @@ namespace App\Services;
 
 
 use App\Interfaces\CommissionTypeInterface;
+use Illuminate\Database\Eloquent\Collection;
+use JetBrains\PhpStorm\Pure;
 
 class WithdrawPrivateCommission implements CommissionTypeInterface
 {
     /**
      * @var float
      */
-    const COMMISSION_PERCENTAGE = 0.3;
-    const WITHDRAW_PRIVET_MAX_TRANSACTION_FREQUENCY = 3;
-    const WITHDRAW_PRIVET_FREE_AMOUNT = 1000;
-    const DEFAULT_CURRENCY = 'EUR';
+    public const COMMISSION_PERCENTAGE = 0.3;
+    public const WITHDRAW_PRIVET_MAX_TRANSACTION_FREQUENCY = 3;
+    public const WITHDRAW_PRIVET_FREE_AMOUNT = 1000;
+    //public const DEFAULT_CURRENCY = 'EUR';
 
-    private $transactions;
+    /**
+     * @var Collection $transactions
+     */
+    private Collection $transactions;
     private CurrencyService $currencyService;
     private CommissionService $commissionService;
 
@@ -25,7 +30,7 @@ class WithdrawPrivateCommission implements CommissionTypeInterface
      * DepositCommission constructor.
      * @param $transactions
      */
-    public function __construct($transactions)
+    #[Pure] public function __construct($transactions)
     {
 
         $this->transactions = $transactions;
@@ -33,7 +38,10 @@ class WithdrawPrivateCommission implements CommissionTypeInterface
         $this->commissionService = new CommissionService();
     }
 
-    public function calculate(): mixed
+    /**
+     * @return Collection
+     */
+    public function calculate(): Collection
     {
         foreach ($this->transactions as $key => $transaction):
             $convertedAmount = $this->currencyService->convertedAmount(
@@ -70,7 +78,7 @@ class WithdrawPrivateCommission implements CommissionTypeInterface
                             );
                     }
 
-                } else if ($this->transactions[$key]->converted_operation_amount <= self::WITHDRAW_PRIVET_FREE_AMOUNT) {
+                } elseif ($this->transactions[$key]->converted_operation_amount <= self::WITHDRAW_PRIVET_FREE_AMOUNT) {
                     $this->transactions[$key]->commission_amount = $this->commissionService
                         ->commissionAmount(0, self::COMMISSION_PERCENTAGE);
                 } else {
@@ -90,9 +98,9 @@ class WithdrawPrivateCommission implements CommissionTypeInterface
 
     /**
      * @param $transaction
-     * @return mixed
+     * @return Collection
      */
-    public function getPreviousTransactionFrequency($transaction): mixed
+    public function getPreviousTransactionFrequency($transaction): Collection
     {
         return $this->transactions
             ->where('week_number_year', '=', $transaction->week_number_year)

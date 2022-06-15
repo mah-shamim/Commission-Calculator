@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use JetBrains\PhpStorm\ArrayShape;
 
 class CommissionCalculatorRequest extends FormRequest
 {
@@ -21,7 +22,7 @@ class CommissionCalculatorRequest extends FormRequest
      *
      * @return array<string, mixed>
      */
-    public function rules(): array
+    #[ArrayShape(['customFile' => "string[]"])] public function rules(): array
     {
         return [
             'customFile' => ['required', 'mimes:text,csv','max:2048']

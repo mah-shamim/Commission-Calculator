@@ -31,7 +31,7 @@ class CurrencyService
 
     /**
      * @param $currency
-     * @return Exception|mixed|string
+     * @return mixed
      */
     public function getCurrencyRate($currency): mixed
     {
@@ -57,14 +57,16 @@ class CurrencyService
     /**
      * @param $commission_amount
      * @param $operation_currency
-     * @param $precision
      * @return float|string
      */
     public function precision($commission_amount, $operation_currency): float|string
     {
-        $currencyFormat = config("money.{$operation_currency}");
+        $currencyFormat = config("money.".$operation_currency);
         if ($currencyFormat['precision'] > 0) {
-            $chargeAmount = number_format($this->reverseAmount($commission_amount, $operation_currency), $currencyFormat['precision'], ".", "");
+            $chargeAmount = number_format(
+                $this->reverseAmount($commission_amount, $operation_currency),
+                $currencyFormat['precision'], ".", ""
+            );
         } else {
             $chargeAmount = ceil($this->reverseAmount($commission_amount, $operation_currency));
         }

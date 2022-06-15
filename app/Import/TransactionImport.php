@@ -13,9 +13,9 @@ use League\Csv\Reader;
 class TransactionImport
 {
     /**
-     * @var Transaction
+     * @var Collection|Transaction
      */
-    protected $transactions;
+    protected Transaction|Collection $transactions;
     public function __construct()
     {
         $this->transactions = new Collection();
@@ -23,8 +23,6 @@ class TransactionImport
 
     /**
      * @param $path
-     * @param bool $append
-     *
      * @throws FileNotFoundException
      */
     public function parseFromCSV($path)
@@ -60,7 +58,7 @@ class TransactionImport
      *
      * @return $this
      */
-    public function add(Transaction $transaction)
+    public function add(Transaction $transaction): static
     {
         $this->transactions->push($transaction);
 

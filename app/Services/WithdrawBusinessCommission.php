@@ -5,6 +5,8 @@ namespace App\Services;
 
 
 use App\Interfaces\CommissionTypeInterface;
+use Illuminate\Database\Eloquent\Collection;
+use JetBrains\PhpStorm\Pure;
 
 class WithdrawBusinessCommission implements CommissionTypeInterface
 {
@@ -12,19 +14,22 @@ class WithdrawBusinessCommission implements CommissionTypeInterface
     /**
      * @var float
      */
-    const COMMISSION_PERCENTAGE = 0.5;
-    const DEFAULT_CURRENCY = 'EUR';
+    public const COMMISSION_PERCENTAGE = 0.5;
+    //public const DEFAULT_CURRENCY = 'EUR';
 
-    private $transactions;
+    /**
+     * @var Collection $transactions
+     */
+    private Collection $transactions;
     private CurrencyService $currencyService;
     private CommissionService $commissionService;
 
 
     /**
-     * DepositCommission constructor.
+     * WithdrawBusinessCommission constructor.
      * @param $transactions
      */
-    public function __construct($transactions)
+    #[Pure] public function __construct($transactions)
     {
 
         $this->transactions = $transactions;
@@ -32,7 +37,10 @@ class WithdrawBusinessCommission implements CommissionTypeInterface
         $this->commissionService = new CommissionService();
     }
 
-    public function calculate(): mixed
+    /**
+     * @return Collection
+     */
+    public function calculate(): Collection
     {
         foreach ($this->transactions as $key => $transaction):
             $convertedAmount = $this->currencyService->convertedAmount(

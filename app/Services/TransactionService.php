@@ -3,12 +3,14 @@
 
 namespace App\Services;
 
+use Illuminate\Database\Eloquent\Collection;
+
 class TransactionService
 {
     /**
      * @var Collection $transactions
      */
-    private $transactions;
+    private Collection $transactions;
 
     /**
      * @param $transactions
