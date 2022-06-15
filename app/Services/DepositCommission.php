@@ -26,7 +26,6 @@ class DepositCommission implements CommissionTypeInterface
      */
     public function __construct($transactions)
     {
-
         $this->transactions = $transactions;
         $this->currencyService = new CurrencyService();
         $this->commissionService = new CommissionService();

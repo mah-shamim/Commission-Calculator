@@ -29,7 +29,6 @@ class WithdrawPrivateCommission implements CommissionTypeInterface
      */
     public function __construct($transactions)
     {
-
         $this->transactions = $transactions;
         $this->currencyService = new CurrencyService();
         $this->commissionService = new CommissionService();
@@ -85,6 +84,7 @@ class WithdrawPrivateCommission implements CommissionTypeInterface
                         );
                 }
             }
+
             $this->transactions[$key]->commission_amount = $this->currencyService
                 ->precision($this->transactions[$key]->commission_amount, $transaction->operation_currency);
         }
