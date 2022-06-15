@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Services;
 
 use Illuminate\Database\Eloquent\Collection;
@@ -25,7 +24,7 @@ class TransactionService
      */
     public function calculateDeposit()
     {
-        $returnData = new DepositCommission($this->transactions->where('operation_type','deposit'));
+        $returnData = new DepositCommission($this->transactions->where('operation_type', 'deposit'));
         $this->transactions->merge($returnData->calculate());
     }
 
@@ -36,8 +35,8 @@ class TransactionService
     {
         $returnData = new WithdrawBusinessCommission(
             $this->transactions
-                ->where('operation_type','withdraw')
-                ->where('user_type','business')
+                ->where('operation_type', 'withdraw')
+                ->where('user_type', 'business')
         );
         $this->transactions->merge($returnData->calculate());
     }
@@ -49,10 +48,9 @@ class TransactionService
     {
         $returnData = new WithdrawPrivateCommission(
             $this->transactions
-                ->where('operation_type','withdraw')
-                ->where('user_type','private')
+                ->where('operation_type', 'withdraw')
+                ->where('user_type', 'private')
         );
         $this->transactions->merge($returnData->calculate());
     }
-
 }

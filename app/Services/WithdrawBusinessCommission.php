@@ -1,16 +1,12 @@
 <?php
 
-
 namespace App\Services;
-
 
 use App\Interfaces\CommissionTypeInterface;
 use Illuminate\Database\Eloquent\Collection;
-use JetBrains\PhpStorm\Pure;
 
 class WithdrawBusinessCommission implements CommissionTypeInterface
 {
-
     /**
      * @var float
      */
@@ -29,7 +25,7 @@ class WithdrawBusinessCommission implements CommissionTypeInterface
      * WithdrawBusinessCommission constructor.
      * @param $transactions
      */
-    #[Pure] public function __construct($transactions)
+    public function __construct($transactions)
     {
 
         $this->transactions = $transactions;
@@ -42,20 +38,21 @@ class WithdrawBusinessCommission implements CommissionTypeInterface
      */
     public function calculate(): Collection
     {
-        foreach ($this->transactions as $key => $transaction):
+        foreach ($this->transactions as $key => $transaction) {
             $convertedAmount = $this->currencyService->convertedAmount(
                 $transaction->operation_amount,
                 $transaction->operation_currency
             );
             $this->transactions[$key]->converted_operation_amount = $convertedAmount;
             $this->transactions[$key]->commission_amount = $this->commissionService->commissionAmount(
-                    $convertedAmount, self::COMMISSION_PERCENTAGE
+                $convertedAmount,
+                self::COMMISSION_PERCENTAGE
             );
             $this->transactions[$key]->commission_amount = $this->currencyService->precision(
                 $this->transactions[$key]->commission_amount,
                 $transaction->operation_currency
             );
-        endforeach;
+        }
         return $this->transactions;
     }
 }

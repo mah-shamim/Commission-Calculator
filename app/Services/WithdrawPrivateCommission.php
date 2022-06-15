@@ -1,12 +1,9 @@
 <?php
 
-
 namespace App\Services;
-
 
 use App\Interfaces\CommissionTypeInterface;
 use Illuminate\Database\Eloquent\Collection;
-use JetBrains\PhpStorm\Pure;
 
 class WithdrawPrivateCommission implements CommissionTypeInterface
 {
@@ -30,7 +27,7 @@ class WithdrawPrivateCommission implements CommissionTypeInterface
      * DepositCommission constructor.
      * @param $transactions
      */
-    #[Pure] public function __construct($transactions)
+    public function __construct($transactions)
     {
 
         $this->transactions = $transactions;
@@ -43,7 +40,7 @@ class WithdrawPrivateCommission implements CommissionTypeInterface
      */
     public function calculate(): Collection
     {
-        foreach ($this->transactions as $key => $transaction):
+        foreach ($this->transactions as $key => $transaction) {
             $convertedAmount = $this->currencyService->convertedAmount(
                 $transaction->operation_amount,
                 $transaction->operation_currency
@@ -54,7 +51,7 @@ class WithdrawPrivateCommission implements CommissionTypeInterface
             if ($this->transactions[$key]->transaction_frequency > self::WITHDRAW_PRIVET_MAX_TRANSACTION_FREQUENCY) {
                 $this->transactions[$key]->commission_amount = $this->commissionService
                     ->commissionAmount($convertedAmount, self::COMMISSION_PERCENTAGE);
-            }else {
+            } else {
                 $previousTransactions = $this->getPreviousTransactionFrequency($transaction);
                 if ($previousTransactions->count() > 0) {
                     $tempAmount = self::WITHDRAW_PRIVET_FREE_AMOUNT;
@@ -77,7 +74,6 @@ class WithdrawPrivateCommission implements CommissionTypeInterface
                                 self::COMMISSION_PERCENTAGE
                             );
                     }
-
                 } elseif ($this->transactions[$key]->converted_operation_amount <= self::WITHDRAW_PRIVET_FREE_AMOUNT) {
                     $this->transactions[$key]->commission_amount = $this->commissionService
                         ->commissionAmount(0, self::COMMISSION_PERCENTAGE);
@@ -92,7 +88,7 @@ class WithdrawPrivateCommission implements CommissionTypeInterface
 
             $this->transactions[$key]->commission_amount = $this->currencyService
                 ->precision($this->transactions[$key]->commission_amount, $transaction->operation_currency);
-        endforeach;
+        }
         return $this->transactions;
     }
 

@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Http\Controllers;
-
 
 use App\Http\Requests\CommissionCalculatorRequest;
 use App\Import\TransactionImport;
@@ -45,7 +43,10 @@ class CommissionCalculatorController
      */
     public function calculate(CommissionCalculatorRequest $commissionCalculatorRequest): Factory|View|Application
     {
-        $filePath = storage_path('app/'.$commissionCalculatorRequest->file('customFile')->storeAs('public/avatars', 'import.csv'));
+        $filePath = storage_path(
+            'app/' . $commissionCalculatorRequest->file('customFile')
+                ->storeAs('public/uploaded', 'import.csv')
+        );
         $this->transactionImport->parseFromCSV($filePath);
         $transactions = ($this->transactionImport->getTransactions());
         $this->transactionService->setTransaction($transactions);
@@ -54,5 +55,4 @@ class CommissionCalculatorController
         $this->transactionService->calculateWithdrawBusiness();
         return view('commission-calculator.index', compact('transactions'));
     }
-
 }
