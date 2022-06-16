@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "640257a0114ee6e23f88f96c54cfe112",
+    "content-hash": "850aecb98324354cc28523e3b5142470",
     "packages": [
         {
             "name": "brick/math",
@@ -8323,6 +8323,51 @@
                 }
             ],
             "time": "2022-05-05T15:53:24+00:00"
+        },
+        {
+            "name": "styleci/cli",
+            "version": "v1.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/StyleCI/CLI.git",
+                "reference": "e9499ed7a87abf5aa2a6a6cb4d7913ccec89af59"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/StyleCI/CLI/zipball/e9499ed7a87abf5aa2a6a6cb4d7913ccec89af59",
+                "reference": "e9499ed7a87abf5aa2a6a6cb4d7913ccec89af59",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "ext-zlib": "*",
+                "php": "^7.2.5 || ^8.0"
+            },
+            "suggest": {
+                "ext-curl": "Required for high performance HTTP transport"
+            },
+            "bin": [
+                "bin/styleci"
+            ],
+            "type": "library",
+            "extra": {
+                "bin-dir": "bin"
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "StyleCI",
+                    "email": "support@styleci.io"
+                }
+            ],
+            "description": "The CLI tool for StyleCI",
+            "support": {
+                "source": "https://github.com/StyleCI/CLI/tree/v1.3.0"
+            },
+            "time": "2022-06-09T09:08:48+00:00"
         },
         {
             "name": "symfony/filesystem",
