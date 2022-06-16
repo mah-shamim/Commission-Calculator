@@ -106,4 +106,5 @@ class WithdrawPrivateCommission implements CommissionTypeInterface
             ->where('user_type', 'private')
             ->sortBy('transaction_id');
     }
+
 }

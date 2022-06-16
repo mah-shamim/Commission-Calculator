@@ -54,4 +54,5 @@ class WithdrawBusinessCommission implements CommissionTypeInterface
         }
         return $this->transactions;
     }
+
 }

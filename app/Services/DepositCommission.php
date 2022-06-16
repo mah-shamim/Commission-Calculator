@@ -49,4 +49,5 @@ class DepositCommission implements CommissionTypeInterface
         }
         return $this->transactions;
     }
+
 }
